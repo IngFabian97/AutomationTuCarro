@@ -9,11 +9,13 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
 import org.openqa.selenium.Keys;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BasePage {
     protected static WebDriver driver;
@@ -21,7 +23,7 @@ public class BasePage {
     private static Actions actions;
 
     static{
-        System.setProperty("webdriver.firefox.driver","D:\\Documentos\\Cursos\\Udemy\\Selenium con Java y Cucumber El curso definitivo\\geckoriver.exe");
+        WebDriverManager.firefoxdriver().setup();
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         driver = new FirefoxDriver(firefoxOptions);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -29,8 +31,7 @@ public class BasePage {
     }
 
     public BasePage (WebDriver driver){
-        BasePage.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
     }
 
     public static void navigateTo(String url){
@@ -119,6 +120,12 @@ public class BasePage {
 
     public List<WebElement> bringMeAllElements(String locator){
         return driver.findElements(By.xpath(locator));
+    }
+
+    public int dropDownSize(String locator){
+        Select dropdown = new Select(customFind(locator));
+        List<WebElement> dropDownOptions = dropdown.getOptions();
+        return dropDownOptions.size();
     }
 
 }
